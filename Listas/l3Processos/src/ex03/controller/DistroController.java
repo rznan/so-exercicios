@@ -20,13 +20,12 @@ public class DistroController {
                     while (line != null){
                         if(line.startsWith("NAME=")){
                             System.out.print(
-                                line.substring(line.indexOf("\""), line.length()-1)
+                                line.substring(line.indexOf("\"") + 1, line.length()-1)
                                 + " ");
                         }
                         else if (line.startsWith("VERSION=")) {
                             System.out.println(
-                                    line.substring(line.indexOf("\"", line.length()-1))
-                            );
+                                line.substring(line.indexOf("\"") + 1, line.length()-1));
                         }
 
                         line = reader.readLine();
