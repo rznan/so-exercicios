@@ -32,7 +32,7 @@ public class DistroController {
     }
 
     public void showDistro(){
-        if(os().contains("nix")) {
+        if(os().contains("inux")) {
             readProcess(new String[] {"cat", "/etc/os-release"});
         } else {
             System.err.println("O Seu sistema operacional não é do tipo Unix");

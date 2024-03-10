@@ -14,7 +14,7 @@ public class KillController {
     }
 
     private boolean isUnix(){
-        return os().contains("nix");
+        return os().contains("inux");
     }
     private void readProcess(String[] callCmd){
         try{

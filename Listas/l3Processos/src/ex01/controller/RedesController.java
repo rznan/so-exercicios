@@ -15,7 +15,7 @@ public class RedesController {
     }
 
     private boolean isUnix(){
-        return os().contains("nix");
+        return os().contains("inux");
     }
 
     public void ip() {
