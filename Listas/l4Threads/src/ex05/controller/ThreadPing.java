@@ -46,7 +46,7 @@ public class ThreadPing extends Thread {
 
     private double processPingStatistics(String statisticsLine) throws Exception {
         if(!statisticsLine.isEmpty())
-            return Integer.parseInt(statisticsLine.split("=")[1].split("/")[1]);
+            return Double.parseDouble(statisticsLine.split("=")[1].split("/")[1]);
         else {
             throw new Exception("Não foi possível recuperar os dados do ping");
         }
