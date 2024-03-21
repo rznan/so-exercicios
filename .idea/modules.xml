@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Listas/l3Processos/l3Processos.iml" filepath="$PROJECT_DIR$/Listas/l3Processos/l3Processos.iml" />
       <module fileurl="file://$PROJECT_DIR$/Listas/l4Threads/l4Threads.iml" filepath="$PROJECT_DIR$/Listas/l4Threads/l4Threads.iml" />
+      <module fileurl="file://$PROJECT_DIR$/l5Semaforos/l5Semaforos.iml" filepath="$PROJECT_DIR$/l5Semaforos/l5Semaforos.iml" />
       <module fileurl="file://$PROJECT_DIR$/so-exercicios.iml" filepath="$PROJECT_DIR$/so-exercicios.iml" />
     </modules>
   </component>
