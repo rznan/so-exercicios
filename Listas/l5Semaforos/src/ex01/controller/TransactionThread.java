@@ -20,21 +20,21 @@ public class TransactionThread extends Thread {
         switch (idDivisionRemainder) {
             case 1:
                 numberOfOperations = 2;
-                minCalculationTime = 20;
-                maxCalculationTime = 100;
-                DBTransactionTime = 100;
+                minCalculationTime = 200;
+                maxCalculationTime = 1000;
+                DBTransactionTime = 1000;
                 break;
             case 2:
                 numberOfOperations = 3;
-                minCalculationTime = 50;
-                maxCalculationTime = 150;
-                DBTransactionTime = 150;
+                minCalculationTime = 500;
+                maxCalculationTime = 1500;
+                DBTransactionTime = 1500;
                 break;
             default:
                 numberOfOperations = 3;
-                minCalculationTime = 100;
-                maxCalculationTime = 200;
-                DBTransactionTime = 150;
+                minCalculationTime = 1000;
+                maxCalculationTime = 2000;
+                DBTransactionTime = 1500;
                 break;
         }
 
@@ -60,7 +60,7 @@ public class TransactionThread extends Thread {
     public void calculate(int minTime, int maxTime) {
         int calculationTime = (int) ((Math.random() * (maxTime-minTime + 1))+ minTime);
         try {
-            System.out.println("Thread " + id + " está calculando por " + (float) calculationTime / 100 + " segundos.");
+            System.out.println("Thread " + id + " está calculando por " + (float) calculationTime / 1000 + " segundos.");
             sleep(calculationTime);
         } catch (InterruptedException e) {
             System.err.println(e.getMessage());
