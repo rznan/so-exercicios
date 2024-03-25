@@ -7,26 +7,44 @@ import java.util.concurrent.Semaphore;
 public class KitchenThread extends Thread {
     final int id;
     final Semaphore deliverySemaphore;
+    final Semaphore kitchenSemaphore;
     final Dish dish;
     final int preparationTime;
 
-    public KitchenThread(int id, Semaphore deliverySemaphore){
+    public KitchenThread(int id, Semaphore deliverySemaphore, Semaphore kitchenSemaphore){
         this.id = id;
         this.deliverySemaphore = deliverySemaphore;
+        this.kitchenSemaphore = kitchenSemaphore;
         this.dish = id % 2 == 0 ? Dish.LASANHA_BOLONHESA : Dish.SOPA_DE_CEBOLA;
         this.preparationTime = (int) (Math.random() * (dish.getMaxTime() - dish.getMinTime()) + 1) + dish.getMinTime();
     }
 
     @Override
     public void run() {
-        cook();
+        queueCook();
+        queueDeliver();
+    }
 
+    public void queueCook() {
+        try {
+            kitchenSemaphore.acquire();
+            cook();
+        }
+        catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+        }
+        finally {
+            kitchenSemaphore.release();
+        }
+    }
+
+    public void queueDeliver() {
         try {
             deliverySemaphore.acquire();
             deliver();
         }
         catch (InterruptedException e) {
-             System.err.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
         finally {
             deliverySemaphore.release();
