@@ -1,68 +1,27 @@
 package ex01.controller;
 
-import java.util.concurrent.Semaphore;
+import ex01.model.Corrida;
 
 public class ThreadCavaleiro extends Thread {
-    final int id;
-    final int extensao_corredor;
+    public final int id;
+    Corrida corrida;
     int posicaoAtual;
     int velocidade_minima;
     int velocidade_maxima;
 
-    final Semaphore semaforoTocha;
-    final int distancia_tocha;
-    static boolean tochaPega = false;
-
-    final Semaphore semaforoPedra;
-    final int distancia_pedra;
-    static boolean pedraPega = false;
-
-    private static boolean[] portas;
-    private static boolean[] statusPorta;
-    final Semaphore semaforoPorta;
-
-    public ThreadCavaleiro(int id, int distanciaFinal, int velocidade_minima, int velocidade_maxima, Semaphore semaforoTocha, int distancia_tocha, Semaphore semaforoPedra, int distancia_pedra, Semaphore semaforoPorta) {
+    public ThreadCavaleiro(int id, Corrida corrida, int velocidade_maxima, int velocidade_minima) {
         this.id = id;
-        this.extensao_corredor = distanciaFinal;
-        this.velocidade_minima = velocidade_minima;
+        this.corrida = corrida;
         this.velocidade_maxima = velocidade_maxima;
-        this.semaforoPedra = semaforoPedra;
-        this.distancia_pedra = distancia_pedra;
-        this.semaforoTocha = semaforoTocha;
-        this.distancia_tocha = distancia_tocha;
-        this.semaforoPorta = semaforoPorta;
-
-        // inicia as portas
-        int quantidadePortas = 4;
-        portas = new boolean[quantidadePortas];
-        statusPorta = new boolean[quantidadePortas];
-        int portaCerta = (int) (Math.random() * quantidadePortas);
-
-        for(int i = 0; i < quantidadePortas; i++) {
-            portas[i] = i == portaCerta;
-            statusPorta[i] = true;
-        }
-
+        this.velocidade_minima = velocidade_minima;
+        posicaoAtual = 0;
     }
 
 
     @Override
     public void run() {
-        while (posicaoAtual < extensao_corredor) {
-            int velocidadeAtual = getVelocidade();
-
-            mover(velocidadeAtual);
-
-            System.out.println("Cavaleiro " + id + " - vel: " + velocidadeAtual + " pos: " + posicaoAtual);
-
-            if(!tochaPega && (posicaoAtual >= distancia_tocha)) {
-                tryPegarTocha();
-            }
-
-            if(!pedraPega && (posicaoAtual >= distancia_pedra)) {
-                tryPegarPedra();
-            }
-
+        while (posicaoAtual < corrida.getExtensao_corredor()) {
+            correr();
         }
 
         System.out.println("CAVALEIRO " + id + ", CHEGOU NAS PORTAS!");
@@ -70,65 +29,81 @@ public class ThreadCavaleiro extends Thread {
         tryAbrirPorta();
     }
 
-    private void tryAbrirPorta() {
-        try {
-            semaforoPorta.acquire();
-            int tentativa;
-            do {
-                tentativa = (int) (Math.random() * 4);
-            } while (!statusPorta[tentativa]);
+    private void correr() {
+        int velocidadeAtual = getVelocidade();
 
-            if(portas[tentativa]){
-                System.out.println("Cavaleiro " + id + ", abriu a " + tentativa + "a porta e VIVEU!");
-            } else {
-                System.out.println("Cavaleiro " + id + ", abriu a " + tentativa + "a porta e MORREU!");
-            }
+        mover(velocidadeAtual);
 
-            statusPorta[tentativa] = false;
+        System.out.println("Cavaleiro " + id + " - vel: " + velocidadeAtual + " pos: " + posicaoAtual);
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            semaforoPorta.release();
+        if (corrida.isTochaDisponivel())
+            if (posicaoAtual >= corrida.getDistancia_tocha()) {
+                tryPegarTocha();
         }
-    }
 
-    private void tryPegarPedra() {
-        try {
-            semaforoPedra.acquire();
-            if(!pedraPega) {
-                aumentarVelocidade();
-                System.out.println("CAVALEIRO " + id + " PEGOU A PEDRA!");
-                pedraPega = true;
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            semaforoPedra.release();
+        if (corrida.isPedraDisponivel())
+            if (posicaoAtual >= corrida.getDistancia_pedra()) {
+                tryPegarPedra();
         }
     }
 
     private void mover(int velocidadeAtual) {
         try {
-            sleep(50);
+            sleep(0);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         posicaoAtual += velocidadeAtual;
     }
 
-    private void tryPegarTocha() {
+    private void tryAbrirPorta() {
         try {
-            semaforoTocha.acquire();
-            if(!tochaPega) {
+            corrida.semaforoPorta.acquire();
+            int tentativa;
+            do {
+                tentativa = (int) (Math.random() * corrida.quantidadePortas);
+            } while (corrida.isPortaAberta(tentativa));
+
+            if(corrida.openDoor(tentativa)){
+                System.out.println("Cavaleiro " + id + ", abriu a " + (tentativa+1) + "a porta e VIVEU!");
+            } else {
+                System.out.println("Cavaleiro " + id + ", abriu a " + (tentativa+1) + "a porta e MORREU!");
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            corrida.semaforoPorta.release();
+        }
+    }
+
+    private void tryPegarPedra() {
+        try {
+            corrida.semaforoPedra.acquire();
+            if(corrida.isPedraDisponivel()) {
                 aumentarVelocidade();
-                System.out.println("CAVALEIRO " + id + " PEGOU A TOCHA!");
-                tochaPega = true;
+                System.out.println("CAVALEIRO " + id + " PEGOU A PEDRA!");
+                corrida.setPedraPega();
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            semaforoTocha.release();
+            corrida.semaforoPedra.release();
+        }
+    }
+
+    private void tryPegarTocha() {
+        try {
+            corrida.semaforoTocha.acquire();
+            if(corrida.isTochaDisponivel()) {
+                aumentarVelocidade();
+                System.out.println("CAVALEIRO " + id + " PEGOU A TOCHA!");
+                corrida.setTochaPega();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            corrida.semaforoTocha.release();
         }
     }
 
@@ -138,7 +113,6 @@ public class ThreadCavaleiro extends Thread {
             velocidade_maxima += 2;
         }
     }
-
 
     private int getVelocidade() {
          return (int) (Math.random() * (velocidade_maxima - velocidade_minima)) + velocidade_minima;
