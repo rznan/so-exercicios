@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Listas/l3Processos/l3Processos.iml" filepath="$PROJECT_DIR$/Listas/l3Processos/l3Processos.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Listas/l4Threads/l4Threads.iml" filepath="$PROJECT_DIR$/Listas/l4Threads/l4Threads.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Listas/l5Semaforos/l5Semaforos.iml" filepath="$PROJECT_DIR$/Listas/l5Semaforos/l5Semaforos.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Listas/l6Semaforos/l6Semaforos.iml" filepath="$PROJECT_DIR$/Listas/l6Semaforos/l6Semaforos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Listas/l03Processos/l03Processos.iml" filepath="$PROJECT_DIR$/Listas/l03Processos/l03Processos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Listas/l04Threads/l04Threads.iml" filepath="$PROJECT_DIR$/Listas/l04Threads/l04Threads.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Listas/l05Semaforos/l05Semaforos.iml" filepath="$PROJECT_DIR$/Listas/l05Semaforos/l05Semaforos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Listas/l06Semaforos/l06Semaforos.iml" filepath="$PROJECT_DIR$/Listas/l06Semaforos/l06Semaforos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Listas/l10RevisaoP1/l10RevisaoP1.iml" filepath="$PROJECT_DIR$/Listas/l10RevisaoP1/l10RevisaoP1.iml" />
       <module fileurl="file://$PROJECT_DIR$/so-exercicios.iml" filepath="$PROJECT_DIR$/so-exercicios.iml" />
     </modules>
   </component>
