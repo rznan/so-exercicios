@@ -1,7 +1,8 @@
-package ex01.view;
+package ex02.view;
 
 import datastructures.genericQueue.Queue;
-import ex01.controller.ProcessThread;
+import ex02.controller.EscalonadorController;
+import ex02.controller.ProcessThread;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,15 +13,11 @@ public class Main {
     private static final String processNamesPath = "Listas/l10RevisaoP1/nomesDeProcessos.txt";
     public static void main(String[] args) {
         Queue<String> namesQueue = readProcessesName(processNamesPath);
-        Semaphore Executionsemaphore = new Semaphore(1);
-        ProcessThread[] processes = createProcesses(namesQueue, Executionsemaphore);
-        runScheduller(processes);
-    }
+        Semaphore executionsemaphore = new Semaphore(1);
+        ProcessThread[] processes = createProcesses(namesQueue, executionsemaphore);
+        EscalonadorController escalonadorController = new EscalonadorController(processes, executionsemaphore);
+        escalonadorController.run();
 
-    private static void runScheduller(ProcessThread[] processes) {
-        for(ProcessThread p : processes) {
-            p.start();
-        }
     }
 
     private static ProcessThread[] createProcesses(Queue<String> namesQueue, Semaphore executionsemaphore) {
@@ -31,7 +28,7 @@ public class Main {
             try {
                 name = namesQueue.remove();
             } catch (Exception e) {
-              name = "Not-Found";
+                name = "Not-Found";
             }
             processThreads[cont]= new ProcessThread(cont, name, executionsemaphore);
             cont++;
