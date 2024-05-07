@@ -1,5 +1,6 @@
 package ex01.view;
 
+
 import datastructures.genericQueue.Queue;
 import ex01.controller.ProcessThread;
 
