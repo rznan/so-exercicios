@@ -1,0 +1,2 @@
+// Executar na pasta var/www
+docker run -dit --name Apache2 -p 80:80 -v "$PWD":/usr/local/apache2/htdocs httpd
