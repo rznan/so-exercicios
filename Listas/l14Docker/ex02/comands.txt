@@ -1,0 +1,9 @@
+docker pull openjdk:11
+
+docker run --name jdk11 -d -i -v "$PWD":/tmp/java/ openjdk:11
+
+// docker exec -i é o modo interativo, onde você pode ver a saída do terminal do container
+docker exec -i jdk11 javac -d tmp/java/bin tmp/java/Teste.java
+
+docker exec -i jdk11 java -classpath /tmp/java/bin Teste
+
